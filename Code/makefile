@@ -1,3 +1,4 @@
+ARGS :=
 TARGET := passmgr
 FILES := $(shell cd ./src; find * -name "*.cpp") $(shell cd ./src; find * -name "*.c")
 CPP := g++ -ggdb -Wall -std=c++17
@@ -24,4 +25,4 @@ clean:
 	rm -r build/*
 
 run: passmgr
-	@./build/myAppStore database.db
+	@./build/$(TARGET) $(ARGS)

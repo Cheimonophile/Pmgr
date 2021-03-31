@@ -3,6 +3,7 @@
 #include <iostream>
 #include <filesystem>
 #include <sqlite3.h>
+#include "config.h"
 
 
 // main method
@@ -25,11 +26,14 @@ int main(int argc, char* argv[]) {
     // make the directory
     system(("mkdir -p " + config_dir).c_str());
 
+    // make the config file
+    Config config(config_dir);
+    config.configure();
+
     
 
 
 
-    std::cout << config_path << "\n";
     // exit code zero
     std::cout << "Done!\n";
     return 0;
