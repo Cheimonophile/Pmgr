@@ -1,28 +1,44 @@
 ARGS :=
-TARGET := passmgr
+TARGET := pmgr
 FILES := $(shell cd ./src; find * -name "*.cpp") $(shell cd ./src; find * -name "*.c")
-CPP := g++ -ggdb -Wall -std=c++17
+CPP := g++ -Wall -std=c++17
 C := gcc -Wall
 
 
 
-all: $(TARGET)
+all: $(TARGET) debug
 
 $(TARGET): build/$(TARGET)
 
-build/$(TARGET): $(addprefix build/out/, $(addsuffix .o,$(FILES)))
+build/$(TARGET): $(addprefix build/obj/, $(addsuffix .o,$(FILES)))
 	$(CPP) $^ -o build/$(TARGET)
 
-build/out/%.cpp.o: src/%.cpp
+build/obj/%.cpp.o: src/%.cpp
 	@mkdir -p $(dir $@)
 	$(CPP) -c $< -o $@
 
-build/out/%.c.o: src/%.c
+build/obj/%.c.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(C) -c $< -o $@
 
+
+debug: debug/debug
+
+debug/debug: $(addprefix debug/obj/, $(addsuffix .o,$(FILES)))
+	$(CPP) -ggdb $^ -o debug/debug
+
+debug/obj/%.cpp.o: src/%.cpp
+	@mkdir -p $(dir $@)
+	$(CPP) -ggdb -c $< -o $@
+
+debug/obj/%.c.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(C) -ggdb -c $< -o $@
+
+
+
 clean:
-	rm -r build/*
+	rm -r build/* debug/*
 
 run: passmgr
 	@./build/$(TARGET) $(ARGS)
