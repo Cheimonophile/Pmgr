@@ -2,9 +2,11 @@
 #define UTIL
 
 #include <iostream>
+using namespace std;
 
+// functions
 void print_usage();
-std::string breakoff(std::string& string);
-bool create_tables(std::string& database_path);
+string breakoff(std::string& string);
+bool addorg(string& database_path, string& org_name);
 
 #endif

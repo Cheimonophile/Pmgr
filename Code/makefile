@@ -40,5 +40,5 @@ debug/obj/%.c.o: src/%.c
 clean:
 	rm -r build/* debug/*
 
-run: passmgr
+run: $(TARGET)
 	@./build/$(TARGET) $(ARGS)

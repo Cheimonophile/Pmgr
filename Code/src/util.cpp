@@ -1,5 +1,6 @@
 #include <iostream>
-#include "sqlite/sqlite3.h"
+
+using namespace std;
 
 /**
  * Prints the application's usage notes.
@@ -67,29 +68,17 @@ std::string breakoff(std::string& string) {
     return word;
 }
 
-bool create_tables(std::string& database_path) {
+/**
+ * creates an organization in the database
+ * 
+ * @param database_path the path to the database
+ * @return whether or not successful
+ */
+bool addorg(string& database_path, string& org_name)
+{
+    // check if the organization exists
 
-    // init the database
-    sqlite3* db;
-    int rc;
 
-    // connect to the database
-    rc = sqlite3_open(database_path.c_str(),&db);
 
-    // check if the database was successfully connected to
-    if(rc) {
-
-        // throw an exception if not successful
-        throw std::string(sqlite3_errmsg(db));
-    }
-    else {
-
-        printf("Database connection successful.\n");
-    }
-
-    // close the database
-    sqlite3_close(db);
-
-    // return successful
     return true;
 }

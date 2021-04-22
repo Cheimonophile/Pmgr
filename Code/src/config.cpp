@@ -76,3 +76,14 @@ void Config::save_configs() {
     // close the config file
     config_file.close();
 }
+
+
+/**
+ * Returns a pointer to the database path
+ * 
+ * @return a pointer to the database path
+ */
+string& Config::peek_database_path()
+{
+    return this->database_path;
+}

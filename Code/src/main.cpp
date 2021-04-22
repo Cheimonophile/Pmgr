@@ -5,12 +5,13 @@
 #include <sqlite3.h>
 #include "util.h"
 #include "config.h"
+#include "sqlite_interface.h"
 
 using namespace std;
 
 // main method
-int main(int argc, char* argv[]) {
-
+int main(int argc, char* argv[])
+{
     // get environment variables
     string home_dir;
     string config_dir;
@@ -32,23 +33,58 @@ int main(int argc, char* argv[]) {
     Config config(config_dir);
     config.configure();
 
+    // init the database
+    try
+    {
+        create_tables(config.peek_database_path());
+    }
+    catch(const exception& e)
+    {
+        cerr << e.what() << '\n';
+    }
+    
     
     // mainloop with buffer
-    cout << "pmgr> ";
     string buffer;
     string token;
-    while(getline(cin,buffer)) {
+    while(true) {
+
+        // print the next prompt
+        cout << "pmgr> ";
+
+        // get the next line
+        getline(cin,buffer);
 
         // read the first token
         token = breakoff(buffer);
 
         // if the token is exit or quit
-        if(token == "quit" || token == "exit") {
+        if(token == "quit" || token == "exit")
+        {
             break;
         }
 
-        // print the next prompt
-        cout << "pmgr> ";
+        // if the token is "addorg"
+        if(token == "addorg")
+        {
+            // get the name of the organization
+            string org_name = breakoff(buffer);
+
+            // if no org name is supplied
+            if(org_name == "")
+            {
+                cout << "No organization name provided.\n";
+                continue;
+            }
+
+            // ask if orgname ok
+            cout << "Is \"" << org_name << "\" ok? [y|n] ";
+
+            // if orgname is ok, make the organization
+            addorg(config.peek_database_path(), org_name);
+
+            continue;
+        }
     }
 
 
