@@ -1,5 +1,5 @@
 #include <iostream>
-#include "sqlite_interface.h"
+#include "dbi/sqlite_interface.h"
 
 using namespace std;
 
