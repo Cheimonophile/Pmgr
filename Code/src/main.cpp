@@ -2,7 +2,6 @@
 // includes
 #include <iostream>
 #include <filesystem>
-#include <sqlite3.h>
 #include "util.h"
 #include "config.h"
 #include "sqlite_interface.h"
@@ -36,7 +35,7 @@ int main(int argc, char* argv[])
     // init the database
     try
     {
-        create_tables(config.peek_database_path());
+        dbi::create_tables(config.peek_database_path());
     }
     catch(const exception& e)
     {
@@ -80,8 +79,14 @@ int main(int argc, char* argv[])
             // ask if orgname ok
             cout << "Is \"" << org_name << "\" ok? [y|n] ";
 
-            // if orgname is ok, make the organization
-            addorg(config.peek_database_path(), org_name);
+            // make  sure the org name is ok
+            getline(cin,buffer);
+            string response  = breakoff(buffer);
+            if(response == "y")
+            {
+                // if orgname is ok, make the organization
+                addorg(config.peek_database_path(), org_name);
+            }
 
             continue;
         }

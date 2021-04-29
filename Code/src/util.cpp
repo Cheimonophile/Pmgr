@@ -1,4 +1,5 @@
 #include <iostream>
+#include "sqlite_interface.h"
 
 using namespace std;
 
@@ -6,7 +7,7 @@ using namespace std;
  * Prints the application's usage notes.
  */
 void print_usage() {
-    std::cout << "Usage: passmmgr\n";
+    std::cout << "Usage: pmgr\n";
 }
 
 
@@ -77,7 +78,10 @@ std::string breakoff(std::string& string) {
 bool addorg(string& database_path, string& org_name)
 {
     // check if the organization exists
+    bool org_exists = dbi::org_exists(database_path, org_name);
 
+    // debug
+    cout << "Org Exists: " << org_exists << endl;
 
 
     return true;

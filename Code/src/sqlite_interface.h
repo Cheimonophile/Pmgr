@@ -2,9 +2,28 @@
 #define SQLITE_INTERFACE
 
 #include <iostream>
+#include <forward_list>
 using namespace std;
 
-// functions
-bool create_tables(string& database_path);
+// namespace
+namespace dbi
+{
+    // structs
+    struct Org
+    {
+        string name;
+    };
+    struct Val
+    {
+        string org_name;
+        string type;
+        string value;
+    };
 
-#endif SQLITE_INTERFACE
+    // functions
+    bool create_tables(string& database_path);
+    forward_list<Org> get_orgs(string& database_path);
+    bool org_exists(string& database_path, string& org_name);
+}
+
+#endif
