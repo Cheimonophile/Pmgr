@@ -68,21 +68,3 @@ std::string breakoff(std::string& string) {
 
     return word;
 }
-
-/**
- * creates an organization in the database
- * 
- * @param database_path the path to the database
- * @return whether or not successful
- */
-bool addorg(string& database_path, string& org_name)
-{
-    // check if the organization exists
-    bool org_exists = dbi::org_exists(database_path, org_name);
-
-    // debug
-    cout << "Org Exists: " << org_exists << endl;
-
-
-    return true;
-}

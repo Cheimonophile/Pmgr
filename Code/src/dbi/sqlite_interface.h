@@ -24,6 +24,7 @@ namespace dbi
     bool create_tables(string& database_path);
     forward_list<Org> get_orgs(string& database_path);
     bool org_exists(string& database_path, string& org_name);
+    void add_org(string& database_path, string& org_name);
 }
 
 #endif

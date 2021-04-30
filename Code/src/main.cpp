@@ -4,6 +4,7 @@
 #include <filesystem>
 #include "util.h"
 #include "config.h"
+#include "commands.h"
 #include "dbi/sqlite_interface.h"
 
 using namespace std;
@@ -63,33 +64,27 @@ int main(int argc, char* argv[])
             break;
         }
 
-        // if the token is "addorg"
-        if(token == "addorg")
+        // try catch for command errors
+        try
         {
-            // get the name of the organization
-            string org_name = breakoff(buffer);
-
-            // if no org name is supplied
-            if(org_name == "")
+            // if the token is "addorg"
+            if(token == "addorg")
             {
-                cout << "No organization name provided.\n";
+                // get the name of the organization
+                string org_name = breakoff(buffer);
+
+                // add the organization
+                addorg(config.peek_database_path(), org_name);
+
                 continue;
             }
-
-            // ask if orgname ok
-            cout << "Is \"" << org_name << "\" ok? [y|n] ";
-
-            // make  sure the org name is ok
-            getline(cin,buffer);
-            string response  = breakoff(buffer);
-            if(response == "y")
-            {
-                // if orgname is ok, make the organization
-                addorg(config.peek_database_path(), org_name);
-            }
-
+        }
+        catch(exception& e)
+        {
+            cout << e.what() << endl;
             continue;
         }
+        
     }
 
 

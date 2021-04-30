@@ -121,6 +121,10 @@ forward_list<Org> dbi::get_orgs(string& database_path)
 /**
  * Checks if the organization is in the database
  * 
+ * @param database_path the path of the sqlite database file
+ * @param org_name the name of the organization
+ * 
+ * @return whether or not org exists in the database
  */
 bool dbi::org_exists(string& database_path, string& org_name)
 {
@@ -160,4 +164,45 @@ bool dbi::org_exists(string& database_path, string& org_name)
 
     // return if successful
     return !orgs.empty();
+}
+
+
+/**
+ * Adds an organization to the database.
+ * 
+ * @param database_path the path of the sqlite database file
+ * @param org_name the name of the organization
+ */
+void dbi::add_org(string& database_path, string& org_name)
+{
+    // open the database
+    sqlite3* db;
+
+    // connect to the database
+    int errcd = sqlite3_open(database_path.c_str(),&db);
+
+    // check if the database was successfully connected to
+    if(errcd) {
+
+        // throw an exception if not successful
+        throw runtime_error(sqlite3_errmsg(db));
+    }
+
+    // write sql
+    string sql = "INSERT INTO orgs VALUES ('" + org_name + "');";
+
+    // execute sql
+    char* errmsg = 0;
+    errcd = sqlite3_exec(db, sql.c_str(), 0, 0, &errmsg);
+
+    // close the database
+    sqlite3_close(db);
+
+    // report any errors
+    if(errcd)
+    {
+        string msg = errmsg;
+        sqlite3_free(errmsg);
+        throw runtime_error(msg);
+    }
 }
